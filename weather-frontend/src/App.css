@@ -7,7 +7,35 @@
   background: #f7f7f7;
   border-radius: 16px;
   box-shadow: 0 2px 8px rgb(0 0 0 / 58%);
-  transition: background 0.5s ease;
+  transition: background 0.5s ease, background-image 0.5s ease-in-out;  
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat; 
+}
+
+
+/* Fundos dinâmicos conforme o clima */
+.sunny-bg {
+  background-image: url('./assets/sunny.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: rgba(0, 0, 0, 0.4);
+  background-blend-mode: darken; /* mistura a cor com a imagem */
+}
+
+.cloudy-bg {
+  background-image: url('./assets/cloudy.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.rainy-bg {
+  background-image: url('./assets/rainy.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 /* Input e botão */
@@ -24,6 +52,7 @@ input[type="text"] {
   border-radius: 24px 0 0 24px;
   outline: none;
   font-size: 16px;
+  opacity: 0.5;
 }
 
 input[type="text"]:focus {
@@ -105,12 +134,6 @@ button:hover {
   }
 }
 
-p {
-  margin: 5px 14px;
-  padding: 10px;
-  border-radius: 6px;
-  box-shadow: 0 1px 4px rgb(0 0 0 / 30%);
-}
 
 /* Remove fundo sólido dos p dentro do card para deixar o gradiente aparecer */
 .weather-card p {
@@ -120,6 +143,11 @@ p {
   box-shadow: 0 1px 4px rgb(0 0 0 / 15%); /* leve sombra só para destaque */
   background: rgba(255, 255, 255, 0.2); /* leve tom transparente */
   color: inherit; /* herda a cor do card (importante para contraste) */
+  transition: transform 0.3s ease; /* animação suave */
+}
+
+.weather-card p:hover {
+  transform: scale(1.05); /* aumenta 5% no hover */
 }
 
 /* Main container para os cards ou parágrafos filhos */

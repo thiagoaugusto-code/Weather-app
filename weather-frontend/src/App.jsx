@@ -34,17 +34,20 @@ function App() {
 
   // Define a cor do card baseada no clima
     const getCardClass = (clima) => {
-      if (!clima) return "cloudy"; // fallback
+      if (!clima) return ""; // fallback
       const lower = clima.toLowerCase();
-      if (lower.includes("céu limpo")) return "sunny";
-      if (lower.includes("nuvens")) return "cloudy";
-      if (lower.includes("chuva")) return "rainy";
-      return "cloudy"; // fallback seguro
-    };
+      if (lower.includes("limpo") || lower.includes("sol")) return "sunny";
+      if (lower.includes("nublado") || lower.includes("nuvens")) return "cloudy";
+      if (lower.includes("chuva") || lower.includes("tempestade")) return "rainy";
+      return "";
+};
+
     
 
   return (
     <div className={`container ${getCardClass(weather?.clima)}-bg`}>
+
+
       <h2>Clima Tempo</h2>
 
       {/* Input e botão de pesquisa */}
