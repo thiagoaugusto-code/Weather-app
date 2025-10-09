@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import './App.css';
 
 function App() {
@@ -6,6 +6,32 @@ function App() {
   const [weather, setWeather] = useState(null); // Dados do clima
   const [loading, setLoading] = useState(false); // Loading
   const [error, setError] = useState(""); // Mensagem de erro
+
+  // useEffect: busca automática com base na localização do usuário
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        const { latitude, longitude } = position.coords;
+
+        setLoading(true); // mostra "Carregando..." enquanto busca
+        try {
+          const res = await fetch(`http://localhost:5000/weather?lat=${latitude}&lon=${longitude}`);
+          if (!res.ok) throw new Error("Não foi possível obter o clima da sua localização.");
+
+          const data = await res.json();
+          setWeather(data);
+          setCity(data.cidade);
+        } catch (err) {
+          console.error("Erro ao buscar clima pela localização:", err);
+          setError("Não foi possível obter sua localização.");
+        } finally {
+          setLoading(false);
+        }
+      });
+    } else {
+      setError("Seu navegador não suporta geolocalização.");
+    }
+  }, []); // roda apenas uma vez ao carregar o app
 
   const fetchWeather = async () => {
     if (!city) return setError("Digite uma cidade");
