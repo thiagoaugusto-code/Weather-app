@@ -14,13 +14,24 @@ app.use(cors());
 
 // Rota para buscar dados do clima
 app.get("/weather", async (req, res) => {
-  const city = req.query.city;
-  if (!city) return res.status(400).json({ error: "city required" });
+  const {city, lat, lon} = req.query;
+
+  const apiKey = process.env.OPENWEATHER_KEY;
+  let url = ""; // URL da API do OpenWeather
+
+  if (lat && lon) {
+    //busca pelo GPS
+    url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=pt_br&appid=${apiKey}`;
+  } else if (city) {
+    // busca pela cidade
+    url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&units=metric&lang=pt_br&appid=${apiKey}`;
+  } else {
+    // Nenhum parâmetro fornecido
+    return res.status(400).json({ error: "Informe cidade ou cordenandas" });
+  }
+
 
   try {
-    const apiKey = process.env.OPENWEATHER_KEY; 
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric&lang=pt_br`;
-
     const response = await fetch(url);
     const data = await response.json();
 
